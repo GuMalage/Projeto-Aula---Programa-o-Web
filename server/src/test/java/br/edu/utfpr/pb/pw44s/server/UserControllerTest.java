@@ -71,4 +71,28 @@ public class UserControllerTest{
 
             assertThat(user.getPassword()).isNotEqualTo(userDB.getPassword());
         }
+
+        @Test
+        public void putUser_whenUserHasNullUsername_reciveBadRequest(){
+            User user = new User();
+            user.setUsername(null);
+            user.setDisplayName("test_Display");
+            user.setPassword("P4word");
+
+            ResponseEntity<Object> response = testRestTemplate.postForEntity("/users", user, Object.class);
+
+            assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+        }
+
+    @Test
+    public void putUser_whenUserHasUsernameWithLessThanRequerid_reciveBadRequest(){
+        User user = new User();
+        user.setUsername("abc");
+        user.setDisplayName("test_Display");
+        user.setPassword("P4word");
+
+        ResponseEntity<Object> response = testRestTemplate.postForEntity("/users", user, Object.class);
+
+        assertThat(response.getStatusCode()).isEqualTo(HttpStatus.BAD_REQUEST);
+    }
 }
